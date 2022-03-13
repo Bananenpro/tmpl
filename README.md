@@ -11,6 +11,26 @@ A command line tool that lets you easily create new programming projects with su
 
 - Go
 
+### Other
+
+- Initialize git repository
+- Create README.md file
+- Create LICENSE file
+
+## Usage
+
+Create a new Go project in the current directory (must be empty):
+
+```sh
+tmpl new go
+```
+
+Help:
+
+```sh
+tmpl --help
+```
+
 ## Setup
 
 ### Cloning the repo
