@@ -47,6 +47,8 @@ func Create(name string) {
 		CreatePython()
 	case "c#", "csharp", "cs":
 		CreateCSharp()
+	case "rust":
+		CreateRust()
 	default:
 		fmt.Println("Unknown template:", name)
 		os.Exit(1)

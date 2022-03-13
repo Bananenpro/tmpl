@@ -16,6 +16,7 @@ func new() {
 		fmt.Println("\tgo")
 		fmt.Println("\tpython")
 		fmt.Println("\tc#")
+		fmt.Println("\trust")
 		os.Exit(1)
 	}
 
