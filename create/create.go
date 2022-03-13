@@ -45,6 +45,8 @@ func Create(name string) {
 		CreateGo()
 	case "python":
 		CreatePython()
+	case "c#", "csharp", "cs":
+		CreateCSharp()
 	default:
 		fmt.Println("Unknown template:", name)
 		os.Exit(1)

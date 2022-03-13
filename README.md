@@ -11,6 +11,12 @@ A command line tool that lets you easily create new programming projects with su
 
 - Go
 - Python
+- C#
+	- Console
+	- ASP.NET Core Empty
+	- ASP.NET Core Web App
+	- ASP.NET Core Web App (Model-View-Controller)
+	- ASP.NET Core Web API
 
 ### Other
 
