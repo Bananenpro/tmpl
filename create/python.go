@@ -2,7 +2,6 @@ package create
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/Bananenpro/tmpl/templates"
 	"github.com/Bananenpro/tmpl/util"
@@ -10,8 +9,7 @@ import (
 
 func CreatePython() {
 	if !util.IsInstalled("python") {
-		fmt.Println("Python is not installed.")
-		os.Exit(1)
+		abort("Python is not installed.")
 	}
 
 	if util.YesNo("Create a virtual environment?", false) {
@@ -21,19 +19,5 @@ func CreatePython() {
 		}
 	}
 
-	file, err := os.Create("main.py")
-	defer file.Close()
-	if err != nil {
-		Clean()
-		fmt.Println("Error while creating file 'main.py':", err)
-		os.Exit(1)
-	}
-
-	_, err = file.WriteString(templates.PythonHelloWorld)
-
-	if err != nil {
-		Clean()
-		fmt.Println("Error while writing into file 'main.py':", err)
-		os.Exit(1)
-	}
+	CreateFile("main.py", templates.PythonHelloWorld)
 }

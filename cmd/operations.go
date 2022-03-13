@@ -13,9 +13,10 @@ func new() {
 	if len(flag.Args()) == 1 {
 		fmt.Printf("Usage: %s new <template>\n", os.Args[0])
 		fmt.Println("Available templates:")
+		fmt.Println("\tc")
+		fmt.Println("\tc#")
 		fmt.Println("\tgo")
 		fmt.Println("\tpython")
-		fmt.Println("\tc#")
 		fmt.Println("\trust")
 		os.Exit(1)
 	}

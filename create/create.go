@@ -49,6 +49,8 @@ func Create(name string) {
 		CreateCSharp()
 	case "rust":
 		CreateRust()
+	case "c":
+		CreateC()
 	default:
 		fmt.Println("Unknown template:", name)
 		os.Exit(1)
@@ -72,10 +74,7 @@ func Readme() {
 
 	fileContent := fmt.Sprintf("# %s", name)
 
-	err = os.WriteFile("README.md", []byte(fileContent), 0755)
-	if err != nil {
-		fmt.Println("Failed to create README:", err)
-	}
+	CreateFile("README.md", fileContent)
 }
 
 func Git() {
@@ -106,10 +105,7 @@ func License() {
 	}
 
 	if fileContent != "" {
-		err := os.WriteFile("LICENSE", []byte(fileContent), 0755)
-		if err != nil {
-			fmt.Println("Failed to write license text into 'LICENSE':", err)
-		}
+		CreateFile("LICENSE", fileContent)
 	}
 
 	if _, err := os.Stat("README.md"); err == nil {
@@ -121,5 +117,18 @@ func License() {
 
 		text := "\n\n## License\n\n%s"
 		readme.WriteString(fmt.Sprintf(text, readmeLicenseText))
+	}
+}
+
+func abort(msg string) {
+	Clean()
+	fmt.Println(msg)
+	os.Exit(1)
+}
+
+func CreateFile(path, content string) {
+	err := os.WriteFile(path, []byte(content), 0755)
+	if err != nil {
+		abort(fmt.Sprintf("Error while creating file '%s': %s", path, err))
 	}
 }

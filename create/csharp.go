@@ -9,8 +9,7 @@ import (
 
 func CreateCSharp() {
 	if !util.IsInstalled("dotnet") {
-		fmt.Println("Dotnet is not installed.")
-		os.Exit(1)
+		abort("Dotnet is not installed.")
 	}
 
 	template := util.Select("Choose a template", []string{"console", "web", "webapp", "mvc", "webapi"}, 0)

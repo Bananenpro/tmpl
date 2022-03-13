@@ -10,8 +10,7 @@ import (
 
 func CreateGo() {
 	if !util.IsInstalled("go") {
-		fmt.Println("Go is not installed.")
-		os.Exit(1)
+		abort("Go is not installed.")
 	}
 
 	moduleName := util.Question("Enter a module name:")
@@ -29,24 +28,8 @@ func CreateGo() {
 
 	err = os.Mkdir("cmd", 0755)
 	if err != nil {
-		Clean()
-		fmt.Println("Error while creating directory 'cmd':", err)
-		os.Exit(1)
+		abort(fmt.Sprint("Error while creating directory 'cmd': ", err))
 	}
 
-	file, err := os.Create("cmd/main.go")
-	defer file.Close()
-	if err != nil {
-		Clean()
-		fmt.Println("Error while creating file 'cmd/main.go':", err)
-		os.Exit(1)
-	}
-
-	_, err = file.WriteString(templates.GoHelloWorld)
-
-	if err != nil {
-		Clean()
-		fmt.Println("Error while writing into file 'cmd/main.go':", err)
-		os.Exit(1)
-	}
+	CreateFile("cmd/main.go", templates.GoHelloWorld)
 }
