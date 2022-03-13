@@ -10,6 +10,7 @@ A command line tool that lets you easily create new programming projects with su
 ## Supported languages/frameworks
 
 - Go
+- Python
 
 ### Other
 

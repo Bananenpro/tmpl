@@ -43,6 +43,8 @@ func Create(name string) {
 	switch name {
 	case "go", "golang":
 		CreateGo()
+	case "python":
+		CreatePython()
 	default:
 		fmt.Println("Unknown template:", name)
 		os.Exit(1)
