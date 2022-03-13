@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Bananenpro/tmpl/create"
 )
 
 func printHelp() {
@@ -19,6 +21,21 @@ func printHelp() {
 
 	fmt.Println("Operations:")
 	fmt.Println("\tnew\t\tCreate a new project in the current directory")
+}
+
+func newProject() {
+	if len(flag.Args()) == 1 {
+		fmt.Printf("Usage: %s new <template>\n", os.Args[0])
+		fmt.Println("Available templates:")
+		fmt.Println("\tc")
+		fmt.Println("\tc#")
+		fmt.Println("\tgo")
+		fmt.Println("\tpython")
+		fmt.Println("\trust")
+		os.Exit(1)
+	}
+
+	create.Create(strings.ToLower(flag.Arg(1)))
 }
 
 func main() {
@@ -41,7 +58,7 @@ func main() {
 
 	switch strings.ToLower(flag.Arg(0)) {
 	case "new":
-		new()
+		newProject()
 	}
 
 	fmt.Println("Done.")
