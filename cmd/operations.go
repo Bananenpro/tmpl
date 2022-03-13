@@ -12,7 +12,10 @@ import (
 func new() {
 	if len(flag.Args()) == 1 {
 		fmt.Printf("Usage: %s new <template>\n", os.Args[0])
-		fmt.Printf("Type '%s list' to get a list of supported templates.\n", os.Args[0])
+		fmt.Println("Available templates:")
+		fmt.Println("\tgo")
+		fmt.Println("\tpython")
+		fmt.Println("\tc#")
 		os.Exit(1)
 	}
 
