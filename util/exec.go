@@ -14,7 +14,7 @@ func IsInstalled(programName string) bool {
 
 func Execute(programName string, args ...string) (string, error) {
 	cmd := exec.Command(programName, args...)
-	out, err := cmd.Output()
+	out, err := cmd.CombinedOutput()
 	return string(out), err
 }
 
