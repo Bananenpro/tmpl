@@ -1,4 +1,4 @@
-package util
+package input
 
 import (
 	"bufio"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Question(question string) string {
+func Input(question string) string {
 	fmt.Printf("%s ", question)
 	scanner := bufio.NewScanner(os.Stdin)
 	if scanner.Scan() {
@@ -24,7 +24,7 @@ func YesNo(question string, defaultValue bool) bool {
 		q = fmt.Sprintf("%s\t[Y/n]", question)
 	}
 
-	answer := Question(q)
+	answer := Input(q)
 	if answer == "" {
 		return defaultValue
 	}
@@ -41,7 +41,7 @@ func Select(msg string, options []string, defaultIndex int) string {
 
 	var err error
 	for index < 0 || index >= len(options) {
-		selection := Question(fmt.Sprintf("%s [%d]: ", msg, defaultIndex))
+		selection := Input(fmt.Sprintf("%s [%d]: ", msg, defaultIndex))
 		index, err = strconv.Atoi(selection)
 		if err != nil {
 			index = defaultIndex

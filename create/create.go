@@ -7,37 +7,21 @@ import (
 	"path"
 	"time"
 
+	"github.com/Bananenpro/tmpl/external"
+	"github.com/Bananenpro/tmpl/input"
 	"github.com/Bananenpro/tmpl/templates"
-	"github.com/Bananenpro/tmpl/util"
 )
-
-func Clean() error {
-	files, err := os.ReadDir(".")
-	if err != nil {
-		return err
-	}
-	for _, f := range files {
-		err = os.RemoveAll(f.Name())
-		if err != nil {
-			fmt.Println("Failed to remove file:", f.Name())
-		}
-
-	}
-	return nil
-}
 
 func Create(name string) {
 	dir, err := os.Open(".")
 	if err != nil {
-		fmt.Println("Failed to open the current directory:", err)
-		os.Exit(1)
+		abort(fmt.Sprint("Failed to open the current directory: ", err))
 	}
 	defer dir.Close()
 
 	_, err = dir.Readdirnames(1)
 	if err != io.EOF {
-		fmt.Println("The current directory is not empty.")
-		os.Exit(1)
+		abort("The current directory is not empty.")
 	}
 
 	switch name {
@@ -52,8 +36,7 @@ func Create(name string) {
 	case "c":
 		CreateC()
 	default:
-		fmt.Println("Unknown template:", name)
-		os.Exit(1)
+		abort(fmt.Sprint("Unknown template: ", name))
 	}
 
 	Git()
@@ -61,8 +44,17 @@ func Create(name string) {
 	License()
 }
 
+func Git() {
+	if external.IsInstalled("git") && input.YesNo("Do you want to initialize git?", true) {
+		out, err := external.Execute("git", "init")
+		if err != nil {
+			fmt.Println("Failed to call 'git init':", out)
+		}
+	}
+}
+
 func Readme() {
-	if !util.YesNo("Create a README file?", true) {
+	if !input.YesNo("Create a README file?", true) {
 		return
 	}
 
@@ -77,29 +69,20 @@ func Readme() {
 	CreateFile("README.md", fileContent)
 }
 
-func Git() {
-	if util.IsInstalled("git") && util.YesNo("Do you want to initialize git?", true) {
-		out, err := util.Execute("git", "init")
-		if err != nil {
-			fmt.Println("Failed to call 'git init':", out)
-		}
-	}
-}
-
 func License() {
-	license := util.Select("Select a license", []string{"None", "MIT", "GPLv3", "Apache 2.0"}, 0)
+	license := input.Select("Select a license", []string{"None", "MIT", "GPLv3", "Apache 2.0"}, 0)
 	var fileContent string
 	var readmeLicenseText string
 	switch license {
 	case "MIT":
-		fileContent = fmt.Sprintf(templates.LicenseMIT, time.Now().Year(), util.GetName())
-		readmeLicenseText = fmt.Sprintf(templates.LicenseMIT, time.Now().Year(), util.GetName())
+		fileContent = fmt.Sprintf(templates.LicenseMIT, time.Now().Year(), external.GetUsername())
+		readmeLicenseText = fmt.Sprintf(templates.LicenseMIT, time.Now().Year(), external.GetUsername())
 	case "GPLv3":
 		fileContent = templates.LicenseGPLv3
-		readmeLicenseText = fmt.Sprintf(templates.LicenseGPLv3ReadmeText, time.Now().Year(), util.GetName())
+		readmeLicenseText = fmt.Sprintf(templates.LicenseGPLv3ReadmeText, time.Now().Year(), external.GetUsername())
 	case "Apache 2.0":
 		fileContent = templates.LicenseApache2
-		readmeLicenseText = fmt.Sprintf(templates.LicenseApache2ReadmeText, time.Now().Year(), util.GetName())
+		readmeLicenseText = fmt.Sprintf(templates.LicenseApache2ReadmeText, time.Now().Year(), external.GetUsername())
 	default:
 		return
 	}
@@ -120,15 +103,30 @@ func License() {
 	}
 }
 
-func abort(msg string) {
-	Clean()
-	fmt.Println(msg)
-	os.Exit(1)
-}
-
 func CreateFile(path, content string) {
 	err := os.WriteFile(path, []byte(content), 0755)
 	if err != nil {
 		abort(fmt.Sprintf("Error while creating file '%s': %s", path, err))
 	}
+}
+
+func Clean() error {
+	files, err := os.ReadDir(".")
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		err = os.RemoveAll(f.Name())
+		if err != nil {
+			fmt.Println("Failed to remove file:", f.Name())
+		}
+
+	}
+	return nil
+}
+
+func abort(msg string) {
+	Clean()
+	fmt.Println(msg)
+	os.Exit(1)
 }

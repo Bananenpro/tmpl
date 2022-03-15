@@ -3,15 +3,16 @@ package create
 import (
 	"fmt"
 
-	"github.com/Bananenpro/tmpl/util"
+	"github.com/Bananenpro/tmpl/external"
+	"github.com/Bananenpro/tmpl/input"
 )
 
 func CreateRust() {
-	if !util.IsInstalled("cargo") {
+	if !external.IsInstalled("cargo") {
 		abort("Cargo is not installed.")
 	}
 
-	projectType := util.Select("Choose a project type", []string{"binary", "library"}, 0)
+	projectType := input.Select("Choose a project type", []string{"binary", "library"}, 0)
 
 	flag := "--bin"
 
@@ -19,7 +20,7 @@ func CreateRust() {
 		flag = "--lib"
 	}
 
-	out, err := util.Execute("cargo", "init", flag, "--vcs", "none")
+	out, err := external.Execute("cargo", "init", flag, "--vcs", "none")
 	if err != nil {
 		abort(fmt.Sprint("Failed to create project: ", out))
 	}

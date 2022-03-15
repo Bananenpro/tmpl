@@ -4,26 +4,25 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Bananenpro/tmpl/external"
+	"github.com/Bananenpro/tmpl/input"
 	"github.com/Bananenpro/tmpl/templates"
-	"github.com/Bananenpro/tmpl/util"
 )
 
 func CreateGo() {
-	if !util.IsInstalled("go") {
+	if !external.IsInstalled("go") {
 		abort("Go is not installed.")
 	}
 
-	moduleName := util.Question("Enter a module name:")
+	moduleName := input.Input("Enter a module name:")
 	if moduleName == "" {
 		fmt.Println("Cancel.")
 		os.Exit(0)
 	}
 
-	out, err := util.Execute("go", "mod", "init", moduleName)
+	out, err := external.Execute("go", "mod", "init", moduleName)
 	if err != nil {
-		Clean()
-		fmt.Println("Failed to run 'go mod init':", out)
-		os.Exit(1)
+		abort(fmt.Sprint("Failed to run 'go mod init':", out))
 	}
 
 	err = os.Mkdir("cmd", 0755)

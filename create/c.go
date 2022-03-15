@@ -6,17 +6,18 @@ import (
 	"path"
 	"strings"
 
+	"github.com/Bananenpro/tmpl/external"
+	"github.com/Bananenpro/tmpl/input"
 	"github.com/Bananenpro/tmpl/templates"
-	"github.com/Bananenpro/tmpl/util"
 )
 
 func CreateC() {
 	compiler := "cc"
-	if !util.IsInstalled("cc") {
-		if util.IsInstalled("gcc") {
+	if !external.IsInstalled("cc") {
+		if external.IsInstalled("gcc") {
 			compiler = "gcc"
 		} else {
-			if util.IsInstalled("clang") {
+			if external.IsInstalled("clang") {
 				compiler = "clang"
 			} else {
 				abort("No C compiler installed.")
@@ -26,15 +27,15 @@ func CreateC() {
 
 	availableTemplates := []string{"empty"}
 
-	if util.IsInstalled("make") {
+	if external.IsInstalled("make") {
 		availableTemplates = append(availableTemplates, "makefile")
 	}
 
-	if util.IsInstalled("cmake") {
+	if external.IsInstalled("cmake") {
 		availableTemplates = append(availableTemplates, "cmake")
 	}
 
-	selectedTemplate := util.Select("Choose a template", availableTemplates, 0)
+	selectedTemplate := input.Select("Choose a template", availableTemplates, 0)
 
 	err := os.Mkdir("src", 0755)
 	if err != nil {

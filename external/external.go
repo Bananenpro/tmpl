@@ -1,4 +1,4 @@
-package util
+package external
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ func Execute(programName string, args ...string) (string, error) {
 	return string(out), err
 }
 
-func GetName() string {
+func GetUsername() string {
 	name, err := Execute("git", "config", "user.name")
 	if err == nil {
 		return strings.TrimSpace(name)
