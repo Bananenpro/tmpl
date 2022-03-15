@@ -33,10 +33,16 @@ A command line tool that lets you easily create new programming projects with su
 
 ## Usage
 
-Create a new Go project in the current directory (must be empty):
+Create a new project in the current directory (must be empty):
 
 ```sh
-tmpl new go
+tmpl new <template-name>
+```
+
+For a list of template names execute:
+
+```sh
+tmpl new
 ```
 
 Help:
