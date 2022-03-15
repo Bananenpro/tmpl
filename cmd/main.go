@@ -59,6 +59,11 @@ func main() {
 	switch strings.ToLower(flag.Arg(0)) {
 	case "new":
 		newProject()
+	default:
+		fmt.Println("Unknown command:", strings.ToLower(flag.Arg(0)))
+		fmt.Printf("Usage: %s <operation> [...]\n", os.Args[0])
+		fmt.Println("Use -h for help.")
+		os.Exit(1)
 	}
 
 	fmt.Println("Done.")
