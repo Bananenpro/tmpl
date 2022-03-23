@@ -33,6 +33,11 @@ func YesNo(question string, defaultValue bool) bool {
 }
 
 func Select(msg string, options []string, defaultIndex int) string {
+	prompt := fmt.Sprintf("%s [%d]: ", msg, defaultIndex)
+	if defaultIndex < 0 || defaultIndex >= len(options) {
+		prompt = fmt.Sprintf("%s: ", msg)
+	}
+
 	for i, o := range options {
 		fmt.Printf("%d) %s  ", i, o)
 	}
@@ -41,7 +46,7 @@ func Select(msg string, options []string, defaultIndex int) string {
 
 	var err error
 	for index < 0 || index >= len(options) {
-		selection := Input(fmt.Sprintf("%s [%d]: ", msg, defaultIndex))
+		selection := Input(prompt)
 		index, err = strconv.Atoi(selection)
 		if err != nil {
 			index = defaultIndex
