@@ -21,7 +21,8 @@ func Create(name string) {
 
 	_, err = dir.Readdirnames(1)
 	if err != io.EOF {
-		abort("The current directory is not empty.")
+		fmt.Println("The current directory is not empty")
+		os.Exit(1)
 	}
 
 	switch name {
