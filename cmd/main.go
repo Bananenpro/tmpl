@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/Bananenpro/tmpl/create"
+	"github.com/Bananenpro/tmpl/input"
 )
 
 func printHelp() {
@@ -24,18 +25,21 @@ func printHelp() {
 }
 
 func newProject() {
+	var template string
+
 	if len(flag.Args()) == 1 {
-		fmt.Printf("Usage: %s new <template>\n", os.Args[0])
-		fmt.Println("Available templates:")
-		fmt.Println("\tc")
-		fmt.Println("\tc#")
-		fmt.Println("\tgo")
-		fmt.Println("\tpython")
-		fmt.Println("\trust")
-		os.Exit(1)
+		template = input.Select("Choose a language", []string{
+			"C",
+			"C#",
+			"Go",
+			"Python",
+			"Rust",
+		}, -1)
+	} else {
+		template = flag.Arg(1)
 	}
 
-	create.Create(strings.ToLower(flag.Arg(1)))
+	create.Create(strings.ToLower(template))
 }
 
 func main() {
