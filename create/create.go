@@ -71,7 +71,7 @@ func Readme() {
 }
 
 func License() {
-	license := input.Select("Select a license", []string{"None", "MIT", "GPLv3", "Apache 2.0"}, 0)
+	license := input.Select("Select a license", []string{"None", "MIT", "GPLv3", "AGPL", "Apache 2.0"}, 0)
 	var fileContent string
 	var readmeLicenseText string
 	switch license {
@@ -81,6 +81,9 @@ func License() {
 	case "GPLv3":
 		fileContent = templates.LicenseGPLv3
 		readmeLicenseText = fmt.Sprintf(templates.LicenseGPLv3ReadmeText, time.Now().Year(), external.GetUsername())
+	case "AGPL":
+		fileContent = templates.LicenseAGPL
+		readmeLicenseText = fmt.Sprintf(templates.LicenseAGPLReadmeText, time.Now().Year(), external.GetUsername())
 	case "Apache 2.0":
 		fileContent = templates.LicenseApache2
 		readmeLicenseText = fmt.Sprintf(templates.LicenseApache2ReadmeText, time.Now().Year(), external.GetUsername())
