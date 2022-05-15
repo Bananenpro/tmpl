@@ -41,29 +41,87 @@ tmpl
 
 Use `--help` for a comprehensive list of options.
 
-## Setup
+## Installation
 
-### Cloning the repo
+### Windows
 
-```bash
-git clone https://github.com/Bananenpro/tmpl.git
-cd tmpl
+1. Open the Start menu
+2. Search for `powershell`
+3. Hit `Run as Administrator`
+4. Paste the following commands and hit enter:
+
+#### Install
+
+```powershell
+Invoke-WebRequest -Uri "https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-windows-amd64.zip" -OutFile "C:\Program Files\tmpl.zip"
+Expand-Archive -LiteralPath "C:\Program Files\tmpl.zip" -DestinationPath "C:\Program Files\tmpl"
+rm "C:\Program Files\tmpl.zip"
+Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value "$((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path);C:\Program Files\tmpl"
 ```
 
-### Requirements
+**IMPORTANT:** Please reboot for the installation to take effect.
+
+#### Update
+
+```powershell
+rm -r -fo "C:\Program Files\tmpl"
+Invoke-WebRequest -Uri "https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-windows-amd64.zip" -OutFile "C:\Program Files\tmpl.zip"
+Expand-Archive -LiteralPath "C:\Program Files\tmpl.zip" -DestinationPath "C:\Program Files\tmpl"
+rm "C:\Program Files\tmpl.zip"
+```
+
+### macOS
+
+Open the Terminal application, paste the command for your architecture and hit enter.
+
+To update, simply run the command again.
+
+#### x86_64
+
+```sh
+curl -L https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-darwin-amd64.tar.gz | tar -xz tmpl && sudo mv tmpl /usr/local/bin
+```
+
+#### ARM64
+
+```sh
+curl -L https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-darwin-arm64.tar.gz | tar -xz tmpl && sudo mv tmpl /usr/local/bin
+```
+
+### Linux
+
+Open a terminal, paste the command for your architecture and hit enter.
+
+To update, simply run the command again.
+
+#### x86_64
+
+```sh
+curl -L https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-linux-amd64.tar.gz | tar -xz tmpl && sudo mv tmpl /usr/local/bin
+```
+
+#### ARM64
+
+```sh
+curl -L https://github.com/Bananenpro/tmpl/releases/latest/download/tmpl-linux-arm64.tar.gz | tar -xz tmpl && sudo mv tmpl /usr/local/bin
+```
+
+### Other
+
+You can download a prebuilt binary file for your operating system on the [releases](https://github.com/Bananenpro/tmpl/releases) page.
+
+You might need to make the file executable before running it.
+
+### Compiling from source
+
+#### Prerequisites
 
 - [Go](https://go.dev/) 1.17+
 
-### Run
-
 ```sh
-go run ./cmd
-```
-
-### Build
-
-```sh
-go build -o tmpl ./cmd/main.go
+git clone https://github.com/Bananenpro/tmpl.git
+cd tmpl
+go build .
 ```
 
 ## License
