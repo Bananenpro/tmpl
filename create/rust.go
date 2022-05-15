@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/Bananenpro/tmpl/external"
 	"github.com/Bananenpro/tmpl/input"
@@ -12,10 +13,11 @@ func CreateRust() {
 		abort("Cargo is not installed.")
 	}
 
-	projectType, cancel := input.Select("Choose a project type", []string{"binary", "library"})
+	projectType, cancel := input.Select("Choose a project type", []string{"Binary", "Library"})
 	if cancel {
 		stop()
 	}
+	projectType = strings.ToLower(projectType)
 
 	flag := "--bin"
 

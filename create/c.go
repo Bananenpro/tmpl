@@ -25,20 +25,21 @@ func CreateC() {
 		}
 	}
 
-	availableTemplates := []string{"empty"}
+	availableTemplates := []string{"Empty"}
 
 	if external.IsInstalled("make") {
-		availableTemplates = append(availableTemplates, "makefile")
+		availableTemplates = append(availableTemplates, "Makefile")
 	}
 
 	if external.IsInstalled("cmake") {
-		availableTemplates = append(availableTemplates, "cmake")
+		availableTemplates = append(availableTemplates, "CMake")
 	}
 
 	selectedTemplate, cancel := input.Select("Choose a template", availableTemplates)
 	if cancel {
 		stop()
 	}
+	selectedTemplate = strings.ToLower(selectedTemplate)
 
 	err := os.Mkdir("src", 0755)
 	if err != nil {
