@@ -25,10 +25,5 @@ func CreateGo() {
 		abort(fmt.Sprint("Failed to run 'go mod init':", out))
 	}
 
-	err = os.Mkdir("cmd", 0755)
-	if err != nil {
-		abort(fmt.Sprint("Error while creating directory 'cmd': ", err))
-	}
-
-	CreateFile("cmd/main.go", templates.GoHelloWorld)
+	CreateFile("main.go", templates.GoHelloWorld)
 }
