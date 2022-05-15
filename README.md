@@ -36,20 +36,10 @@ A command line tool that lets you easily create new programming projects with su
 Create a new project in the current directory (must be empty):
 
 ```sh
-tmpl new <template-name>
+tmpl
 ```
 
-For a list of template names execute:
-
-```sh
-tmpl new
-```
-
-Help:
-
-```sh
-tmpl --help
-```
+Use `--help` for a comprehensive list of options.
 
 ## Setup
 

@@ -1,72 +1,58 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/Bananenpro/tmpl/create"
 	"github.com/Bananenpro/tmpl/input"
+	"github.com/ogier/pflag"
 )
-
-func printHelp() {
-	fmt.Printf("Usage: %s <operation> [...]\n", os.Args[0])
-
-	fmt.Println()
-
-	fmt.Println("Flags:")
-	fmt.Println("\t-h, --help\tDisplay help")
-
-	fmt.Println()
-
-	fmt.Println("Operations:")
-	fmt.Println("\tnew\t\tCreate a new project in the current directory")
-}
 
 func newProject() {
 	var template string
 
-	if len(flag.Args()) == 1 {
-		template = input.Select("Choose a language", []string{
+	if len(pflag.Args()) < 2 {
+		var cancel bool
+		template, cancel = input.Select("Choose a language", []string{
 			"C",
 			"C#",
 			"Go",
 			"Python",
 			"Rust",
-		}, -1)
+		})
+		if cancel {
+			os.Exit(0)
+		}
 	} else {
-		template = flag.Arg(1)
+		template = pflag.Arg(1)
 	}
 
 	create.Create(strings.ToLower(template))
 }
 
 func main() {
-	var help bool
-	flag.BoolVar(&help, "h", false, "Display help")
-	flag.BoolVar(&help, "help", false, "Display help")
+	pflag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %s <operation> [...]\n", os.Args[0])
+		fmt.Println("\nOperations:")
+		fmt.Println("\tnew\t\tCreate a new project in the current directory (default)")
+		pflag.PrintDefaults()
+	}
+	pflag.Parse()
 
-	flag.Parse()
+	operation := strings.ToLower(pflag.Arg(0))
 
-	if help {
-		printHelp()
-		return
+	if len(pflag.Args()) == 0 {
+		operation = "new"
 	}
 
-	if len(flag.Args()) == 0 {
-		fmt.Printf("Usage: %s <operation> [...]\n", os.Args[0])
-		fmt.Println("Use -h for help.")
-		os.Exit(1)
-	}
-
-	switch strings.ToLower(flag.Arg(0)) {
+	switch operation {
 	case "new":
 		newProject()
 	default:
-		fmt.Println("Unknown command:", strings.ToLower(flag.Arg(0)))
-		fmt.Printf("Usage: %s <operation> [...]\n", os.Args[0])
-		fmt.Println("Use -h for help.")
+		fmt.Println("Unknown command:", strings.ToLower(pflag.Arg(0)))
+		pflag.Usage()
 		os.Exit(1)
 	}
 

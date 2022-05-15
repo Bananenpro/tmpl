@@ -46,7 +46,11 @@ func Create(name string) {
 }
 
 func Git() {
-	if external.IsInstalled("git") && input.YesNo("Do you want to initialize git?", true) {
+	yes, cancel := input.YesNo("Do you want to initialize git?", true)
+	if cancel {
+		stop()
+	}
+	if external.IsInstalled("git") && yes {
 		out, err := external.Execute("git", "init")
 		if err != nil {
 			fmt.Println("Failed to call 'git init':", out)
@@ -55,7 +59,11 @@ func Git() {
 }
 
 func Readme() {
-	if !input.YesNo("Create a README file?", true) {
+	yes, cancel := input.YesNo("Create a README file?", true)
+	if cancel {
+		stop()
+	}
+	if !yes {
 		return
 	}
 
@@ -71,7 +79,10 @@ func Readme() {
 }
 
 func License() {
-	license := input.Select("Select a license", []string{"None", "MIT", "GPLv3", "AGPL", "Apache 2.0"}, 0)
+	license, cancel := input.Select("Select a license", []string{"None", "MIT", "GPLv3", "AGPL", "Apache 2.0"})
+	if cancel {
+		stop()
+	}
 	var fileContent string
 	var readmeLicenseText string
 	switch license {
@@ -127,6 +138,12 @@ func Clean() error {
 
 	}
 	return nil
+}
+
+func stop() {
+	Clean()
+	fmt.Println("Cancelled.")
+	os.Exit(0)
 }
 
 func abort(msg string) {

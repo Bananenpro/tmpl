@@ -14,7 +14,10 @@ func CreateGo() {
 		abort("Go is not installed.")
 	}
 
-	moduleName := input.Input("Enter a module name:")
+	moduleName, cancel := input.Input("Enter a module name:")
+	if cancel {
+		stop()
+	}
 	if moduleName == "" {
 		fmt.Println("Cancel.")
 		os.Exit(0)

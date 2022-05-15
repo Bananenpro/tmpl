@@ -12,7 +12,10 @@ func CreateRust() {
 		abort("Cargo is not installed.")
 	}
 
-	projectType := input.Select("Choose a project type", []string{"binary", "library"}, 0)
+	projectType, cancel := input.Select("Choose a project type", []string{"binary", "library"})
+	if cancel {
+		stop()
+	}
 
 	flag := "--bin"
 

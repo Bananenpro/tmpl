@@ -1,57 +1,30 @@
 package input
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	"github.com/AlecAivazis/survey/v2"
 )
 
-func Input(question string) string {
-	fmt.Printf("%s ", question)
-	scanner := bufio.NewScanner(os.Stdin)
-	if scanner.Scan() {
-		return strings.TrimSpace(scanner.Text())
-	}
-
-	return ""
+func Input(question string) (response string, cancel bool) {
+	var result string
+	err := survey.AskOne(&survey.Input{
+		Message: question,
+	}, &result, survey.WithValidator(survey.Required))
+	return result, err != nil
 }
 
-func YesNo(question string, defaultValue bool) bool {
-	q := fmt.Sprintf("%s\t[y/N]", question)
-	if defaultValue {
-		q = fmt.Sprintf("%s\t[Y/n]", question)
-	}
-
-	answer := Input(q)
-	if answer == "" {
-		return defaultValue
-	}
-
-	return strings.ToLower(answer) == "y"
+func YesNo(question string, defaultValue bool) (yes bool, cancel bool) {
+	err := survey.AskOne(&survey.Confirm{
+		Message: question,
+		Default: defaultValue,
+	}, &yes, survey.WithValidator(survey.Required))
+	return yes, err != nil
 }
 
-func Select(msg string, options []string, defaultIndex int) string {
-	prompt := fmt.Sprintf("%s [%d]: ", msg, defaultIndex)
-	if defaultIndex < 0 || defaultIndex >= len(options) {
-		prompt = fmt.Sprintf("%s: ", msg)
-	}
-
-	for i, o := range options {
-		fmt.Printf("%d) %s  ", i, o)
-	}
-	fmt.Println()
-	index := -1
-
-	var err error
-	for index < 0 || index >= len(options) {
-		selection := Input(prompt)
-		index, err = strconv.Atoi(selection)
-		if err != nil {
-			index = defaultIndex
-		}
-	}
-
-	return options[index]
+func Select(msg string, options []string) (selected string, cancel bool) {
+	var result string
+	err := survey.AskOne(&survey.Select{
+		Message: msg,
+		Options: options,
+	}, &result, survey.WithValidator(survey.Required))
+	return result, err != nil
 }

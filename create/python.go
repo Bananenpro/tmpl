@@ -13,7 +13,11 @@ func CreatePython() {
 		abort("Python is not installed.")
 	}
 
-	if input.YesNo("Create a virtual environment?", false) {
+	yes, cancel := input.YesNo("Create a virtual environment?", false)
+	if cancel {
+		stop()
+	}
+	if yes {
 		out, err := external.Execute("python", "-m", "venv", "venv")
 		if err != nil {
 			fmt.Println("Failed to create a virtual environment:", out)

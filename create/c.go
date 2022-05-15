@@ -35,7 +35,10 @@ func CreateC() {
 		availableTemplates = append(availableTemplates, "cmake")
 	}
 
-	selectedTemplate := input.Select("Choose a template", availableTemplates, 0)
+	selectedTemplate, cancel := input.Select("Choose a template", availableTemplates)
+	if cancel {
+		stop()
+	}
 
 	err := os.Mkdir("src", 0755)
 	if err != nil {
