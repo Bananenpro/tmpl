@@ -119,7 +119,7 @@ func License() {
 }
 
 func CreateFile(path, content string) {
-	err := os.WriteFile(path, []byte(content), 0755)
+	err := os.WriteFile(path, []byte(content+"\n"), 0755)
 	if err != nil {
 		abort(fmt.Sprintf("Error while creating file '%s': %s", path, err))
 	}
